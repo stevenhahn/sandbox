@@ -1,6 +1,6 @@
 var margin = [20, 120, 20, 140],
     width = 1280 - margin[1] - margin[3],
-    height = 800 - margin[0] - margin[2],
+    height = 600 - margin[0] - margin[2],
     i = 0,
     duration = 1250,
     root;
@@ -14,7 +14,7 @@ var diagonal = d3.svg.diagonal()
 var vis = d3.select("#body").append("svg:svg")
     .attr("width", width + margin[1] + margin[3])
     .attr("height", height + margin[0] + margin[2])
-  .append("svg:g")
+    .append("svg:g")
     .attr("transform", "translate(" + margin[3] + "," + margin[0] + ")");
 
 d3.json("/data/CIS20.json", function(json) {
@@ -49,7 +49,7 @@ function update(source) {
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
 
-  // Update the nodesâ€¦
+  // Update the nodes
   var node = vis.selectAll("g.node")
       .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
@@ -86,7 +86,8 @@ function update(source) {
 
   nodeUpdate.select("circle")
       .attr("r", 6)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+      ///.style("fill", function(d) { return d._children ? "lightsteelblue" : "#f00"; });
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : (d.level == "Advanced" ? "#FE6F5E" : "#fff"); });
 
   nodeUpdate.select("text")
       .style("fill-opacity", 1);
@@ -103,7 +104,7 @@ function update(source) {
   nodeExit.select("text")
       .style("fill-opacity", 1e-6);
 
-  // Update the linksâ€¦
+  // Update the links
   var link = vis.selectAll("path.link")
       .data(tree.links(nodes), function(d) { return d.target.id; });
 
